@@ -12,7 +12,7 @@
       <el-table-column prop="author" label="作者" />
       <el-table-column prop="subDesc" label="简介" />
       <el-table-column prop="icon" label="图片" />
-      <el-table-column prop="blogTxt" label="博客内容" />
+      <!-- <el-table-column prop="blogTxt" label="博客内容" /> -->
       <el-table-column prop="top" label="置顶" align="center">
         <template slot-scope="scope">
           <el-switch
@@ -25,7 +25,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="typeOne" label="一级分类" />
-      <el-table-column prop="typeTwo" label="二级分类" />
+      <!-- <el-table-column prop="typeTwo" label="二级分类" /> -->
       <el-table-column prop="status" label="是否发布" align="center">
         <template slot-scope="scope">
           <el-switch

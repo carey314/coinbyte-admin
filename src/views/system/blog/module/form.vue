@@ -28,15 +28,15 @@
           <el-form-item label="图片" prop="icon">
             <el-input v-model="form.icon" style="width: 370px;" />
           </el-form-item>
-          <el-form-item label="博客内容" prop="blogTxt" style="position: relative;">
+          <!-- <el-form-item label="博客内容" prop="blogTxt" style="position: relative;">
             <el-input v-model="form.blogTxt" style="width: 370px;" />
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="一级分类" prop="typeOne">
             <el-input v-model="form.typeOne" style="width: 370px;" />
           </el-form-item>
-          <el-form-item label="二级分类" prop="typeTwo">
+          <!-- <el-form-item label="二级分类" prop="typeTwo">
             <el-input v-model="form.typeTwo" style="width: 370px;" />
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item v-if="form.pid !== 0" label="状态" prop="status">
             <el-radio
               v-for="item in jobStatus"
@@ -49,7 +49,8 @@
           </el-form-item>
         </el-col>
         <el-col :span="16">
-          <mavon-editor ref="md" v-model="form.blogTxt" :style="editorStyle" :toolbars="toolbars" @imgAdd="onImageAdd" />
+          <span>博客内容:</span>
+          <mavon-editor ref="md" v-model="form.blogTxt" :style="editorStyle" style="margin-top:8px;" :toolbars="toolbars" @imgAdd="onImageAdd" />
         </el-col>
       </el-row>
     </el-form>
