@@ -1,19 +1,14 @@
 <template>
   <el-dialog
     append-to-body
+    destroy-on-close
     :close-on-click-modal="false"
     :before-close="crud.cancelCU"
     :visible="crud.status.cu > 0"
     :title="crud.status.title"
     width="1500px"
   >
-    <el-form
-      ref="form"
-      :model="form"
-      :rules="rules"
-      size="small"
-      label-width="80px"
-    >
+    <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
       <el-row>
         <el-col :span="8">
           <el-form-item label="博客标题" prop="title">
@@ -38,19 +33,16 @@
             <el-input v-model="form.typeTwo" style="width: 370px;" />
           </el-form-item> -->
           <el-form-item v-if="form.pid !== 0" label="状态" prop="status">
-            <el-radio
-              v-for="item in jobStatus"
-              :key="item.id"
-              v-model="form.status"
-              :label="item.value === 'true'"
-            >
+            <el-radio v-for="item in jobStatus" :key="item.id" v-model="form.status" :label="item.value === 'true'">
               {{ item.label }}
             </el-radio>
           </el-form-item>
         </el-col>
         <el-col :span="16">
           <span>博客内容:</span>
-          <mavon-editor ref="md" v-model="form.blogTxt" :style="editorStyle" style="margin-top:8px;" :toolbars="toolbars" @imgAdd="onImageAdd" />
+          <!-- <mavon-editor ref="md" v-model="form.blogTxt" :style="editorStyle" style="margin-top:8px;" :toolbars="toolbars"
+            @imgAdd="onImageAdd" @paste.native="onPaste" /> -->
+          <Editor v-model="form.blogTxt" />
         </el-col>
       </el-row>
     </el-form>
@@ -59,11 +51,7 @@
       <el-button type="text" @click="crud.cancelCU">
         取消
       </el-button>
-      <el-button
-        :loading="crud.status.cu === 2"
-        type="primary"
-        @click="crud.submitCU"
-      >
+      <el-button :loading="crud.status.cu === 2" type="primary" @click="crud.submitCU">
         确认
       </el-button>
     </div>
@@ -73,9 +61,10 @@
 <script>
 import { form } from '@crud/crud'
 import blogApi from '@/api/system/blog'
-import { mavonEditor } from 'mavon-editor'
 import { upload } from '@/utils/upload'
+import { mapGetters } from 'vuex'
 import 'mavon-editor/dist/css/index.css'
+import Editor from '../../../components/Editor.vue'
 // import CRUD from '@crud/crud'
 
 const defaultForm = {
@@ -93,7 +82,7 @@ const defaultForm = {
 }
 export default {
   components: {
-    mavonEditor
+    Editor
   },
   mixins: [form(defaultForm)],
   props: {
@@ -159,6 +148,12 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters([
+      'imagesUploadApi',
+      'baseApi'
+    ])
+  },
   methods: {
     goToApiPage(id) {
       this.$router.push('/blog/' + id)
@@ -186,6 +181,8 @@ export default {
         const data = res.data
         const url = `${this.baseApi}/file/${data.type}/${data.realName}`
         this.$refs.md.$img2Url(pos, url)
+      }).catch(e => {
+        console.log(e)
       })
     },
     handleUploadSuccess(response, file, fileList) {
@@ -205,6 +202,9 @@ export default {
         return false
       }
       return true
+    },
+    onPaste(event) {
+      console.log(event)
     }
   }
 }
@@ -214,8 +214,8 @@ export default {
 ::v-deep .el-input-number .el-input__inner {
   text-align: left;
 }
-  .v-note-wrapper.shadow {
-    z-index: 5;
-  }
 
+.v-note-wrapper.shadow {
+  z-index: 5;
+}
 </style>

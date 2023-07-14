@@ -7,5 +7,6 @@ export function upload(api, file) {
   const config = {
     headers: { 'Authorization': getToken() }
   }
+  console.log(api)
   return axios.post(api, data, config)
 }
