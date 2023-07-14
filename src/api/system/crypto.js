@@ -1,18 +1,23 @@
 import request from '@/utils/request'
 
 export function add(data) {
+  const cloneData = deepClone(data)
+  toJSON(cloneData, ['moreExtendJson', 'questionJson', 'socialMediaJson'], true)
   return request({
     url: 'api/coin/info',
     method: 'post',
-    data
+    data: cloneData
   })
 }
 
 export function edit(data) {
+  const cloneData = deepClone(data)
+  console.log(cloneData)
+  toJSON(cloneData, ['moreExtendJson', 'questionJson', 'socialMediaJson'], true)
   return request({
     url: '/api/coin/info',
     method: 'put',
-    data
+    data: cloneData
   })
 }
 
@@ -20,6 +25,9 @@ export function get(id) {
   return request({
     url: `/api/coin/info/${id}`,
     method: 'get'
+  }).then(res => {
+    toJSON(res, ['moreExtendJson', 'questionJson', 'socialMediaJson'], false)
+    return res
   })
 }
 
@@ -38,3 +46,34 @@ export function getAll(params) {
   })
 }
 export default { add, edit, get, getCoinInfoBySlugAndArea, getAll }
+
+function toJSON(data, attrs, toString) {
+  try {
+    for (let i = 0; i < attrs.length; i++) {
+      if (toString) {
+        if (data[attrs[i]]) {
+          data[attrs[i]] = JSON.stringify(data[attrs[i]])
+        }
+      } else {
+        if (data[attrs[i]]) {
+          data[attrs[i]] = JSON.parse(data[attrs[i]])
+        }
+      }
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+function deepClone(obj) {
+  if (obj === null || typeof obj !== 'object') {
+    return obj
+  }
+  const newObj = Array.isArray(obj) ? [] : {}
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      newObj[key] = deepClone(obj[key])
+    }
+  }
+  return newObj
+}

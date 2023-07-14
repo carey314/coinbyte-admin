@@ -21,13 +21,27 @@
             <el-input v-model="form.author" style="width: 370px;" />
           </el-form-item>
           <el-form-item label="图片" prop="icon">
-            <el-input v-model="form.icon" style="width: 370px;" />
+            <!-- <el-input v-model="form.icon" style="width: 370px;" /> -->
+            <el-upload
+              class="avatar-uploader"
+              :action="imagesUploadApi"
+              :headers="headers"
+              :show-file-list="false"
+              :on-success="handleUploadSuccess"
+              :on-error="handleUploadError"
+              :before-upload="beforeAvatarUpload"
+            >
+              <img v-if="form.icon" :src="form.icon" class="upload-image">
+              <div v-else class="uploadbtn">
+                + Image
+              </div>
+            </el-upload>
           </el-form-item>
           <!-- <el-form-item label="博客内容" prop="blogTxt" style="position: relative;">
             <el-input v-model="form.blogTxt" style="width: 370px;" />
           </el-form-item> -->
           <el-form-item label="一级分类" prop="typeOne">
-            <el-input v-model="form.typeOne" style="width: 370px;" />
+            <el-input v-model="form.typeOne" type="number" style="width: 370px;" />
           </el-form-item>
           <!-- <el-form-item label="二级分类" prop="typeTwo">
             <el-input v-model="form.typeTwo" style="width: 370px;" />
@@ -65,17 +79,20 @@ import { upload } from '@/utils/upload'
 import { mapGetters } from 'vuex'
 import 'mavon-editor/dist/css/index.css'
 import Editor from '../../../components/Editor.vue'
+import { getToken } from '@/utils/auth'
+import { Notification } from 'element-ui'
+
 // import CRUD from '@crud/crud'
 
 const defaultForm = {
-  id: '',
+  id: null,
   title: '',
   blogTxt: '',
   icon: '',
   status: 0,
   subDesc: '',
-  typeOne: '',
-  typeTwo: '',
+  typeOne: null,
+  typeTwo: 0,
   top: 0,
   author: '',
   publishTime: ''
@@ -152,7 +169,12 @@ export default {
     ...mapGetters([
       'imagesUploadApi',
       'baseApi'
-    ])
+    ]),
+    headers() {
+      return {
+        'Authorization': getToken()
+      }
+    }
   },
   methods: {
     goToApiPage(id) {
@@ -185,10 +207,10 @@ export default {
         console.log(e)
       })
     },
-    handleUploadSuccess(response, file, fileList) {
-      this.imageUrl = response.data.url
-      this.form.icon = response.data.url
-    },
+    // handleUploadSuccess(response, file, fileList) {
+    //   this.imageUrl = response.data.url
+    //   this.form.icon = response.data.url
+    // },
     beforeUpload(file) {
       const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
       const isLt2M = file.size / 1024 / 1024 < 2
@@ -205,6 +227,36 @@ export default {
     },
     onPaste(event) {
       console.log(event)
+    },
+    beforeAvatarUpload(rawFile) {
+      const imgTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/bmp']
+      if (!imgTypes.includes(rawFile.type)) {
+        // ElMessage.error('Avatar picture must be JPG format!')
+        Notification.error({
+          title: 'Picture must be image format!',
+          duration: 5000
+        })
+        return false
+      }
+      // else if (rawFile.size / 1024 / 1024 > 2) {
+      //   // ElMessage.error('Avatar picture size can not exceed 2MB!')
+      //   Notification.error({
+      //     title: 'Avatar picture must be JPG format!',
+      //     duration: 5000
+      //   })
+      //   return false
+      // }
+      return true
+    },
+    handleUploadSuccess(response) {
+      const url = `${this.baseApi}/file/${response.type}/${response.realName}`
+      this.form.icon = url
+    },
+    handleUploadError(error) {
+      Notification.error({
+        title: JSON.parse(error.message).message,
+        duration: 5000
+      })
     }
   }
 }
@@ -217,5 +269,22 @@ export default {
 
 .v-note-wrapper.shadow {
   z-index: 5;
+}
+.upload-image {
+  width: 200px;
+}
+.uploadbtn {
+  width: 200px;
+  height: 200px;
+  line-height: 200px;
+  text-align: center;
+  border: 1px dashed #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.uploadbtn:hover {
+  border: 1px dashed #05f;
+  color: #05f;
 }
 </style>

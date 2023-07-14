@@ -34,7 +34,7 @@
     <!--分页组件-->
     <pagination />
     <!--表单渲染-->
-    <eForm :crypto-status="dict.crypto_status" />
+    <eForm :crypto-status="dict.crypto_status" :get-info="getInfo" />
   </div>
 </template>
 
@@ -96,6 +96,9 @@ export default {
       }).catch(() => {
         data.enabled = !data.enabled
       })
+    },
+    getInfo(id) {
+      return crudJob.get(id)
     }
   }
 }
