@@ -45,7 +45,15 @@ export function getAll(params) {
     params
   })
 }
-export default { add, edit, get, getCoinInfoBySlugAndArea, getAll }
+
+export function getType() {
+  return request({
+    url: 'api/coin/info/type',
+    method: 'get'
+  })
+}
+
+export default { add, edit, get, getCoinInfoBySlugAndArea, getAll, getType }
 
 function toJSON(data, attrs, toString) {
   try {

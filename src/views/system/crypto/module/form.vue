@@ -232,6 +232,10 @@ export default {
     getInfo: {
       type: Function,
       required: true
+    },
+    infoTypes: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
@@ -263,18 +267,10 @@ export default {
         }
       ],
       typeIdListOpitons: [
-        {
-          label: 'Type 1',
-          value: 1
-        },
-        {
-          label: 'Type 2',
-          value: 2
-        },
-        {
-          label: 'Type 3',
-          value: 3
-        }
+        // {
+        //   label: 'Type 1',
+        //   value: 1
+        // },
       ]
     }
   },
@@ -302,6 +298,14 @@ export default {
         }
         console.log(this.form.socialMediaJson)
       }
+    },
+    async infoTypes(newValue) {
+      this.typeIdListOpitons = newValue.map(v => (
+        {
+          label: v.name,
+          value: v.id
+        }
+      ))
     }
   },
   mounted() {

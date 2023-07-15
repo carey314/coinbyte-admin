@@ -34,7 +34,7 @@
     <!--分页组件-->
     <pagination />
     <!--表单渲染-->
-    <eForm :crypto-status="dict.crypto_status" :get-info="getInfo" />
+    <eForm :crypto-status="dict.crypto_status" :get-info="getInfo" :info-types="infoTypes" />
   </div>
 </template>
 
@@ -73,8 +73,16 @@ export default {
         area: [
           { required: true, message: '请输入语言', trigger: 'blur' }
         ]
-      }
-
+      },
+      infoTypes: []
+    }
+  },
+  async mounted() {
+    try {
+      const res = await this.getTypes()
+      this.infoTypes = res.content
+    } catch (e) {
+      console.log(e)
     }
   },
   methods: {
@@ -99,6 +107,9 @@ export default {
     },
     getInfo(id) {
       return crudJob.get(id)
+    },
+    getTypes() {
+      return crudJob.getType()
     }
   }
 }
