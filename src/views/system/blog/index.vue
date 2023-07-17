@@ -46,7 +46,7 @@
       >
         <template slot-scope="scope">
           <el-button @click="navigateToEditPage(scope.row)">编辑</el-button>
-          <el-button style="margin-left: 0px !important;margin-top: 3px;" @click="navigateToDelPage(scope.row)">删除</el-button>
+          <!-- <el-button style="margin-left: 0px !important;margin-top: 3px;" @click="navigateToDelPage(scope.row)">删除</el-button> -->
         </template>
 
       </el-table-column>
