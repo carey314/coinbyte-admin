@@ -53,7 +53,23 @@ export function getType() {
   })
 }
 
-export default { add, edit, get, getCoinInfoBySlugAndArea, getAll, getType }
+export function addType(data) {
+  return request({
+    url: 'api/coin/info/type',
+    method: 'post',
+    data
+  })
+}
+
+export function editType(data) {
+  return request({
+    url: 'api/coin/info/type',
+    method: 'put',
+    data
+  })
+}
+
+export default { add, edit, get, getCoinInfoBySlugAndArea, getAll, getType, addType, editType }
 
 function toJSON(data, attrs, toString) {
   try {

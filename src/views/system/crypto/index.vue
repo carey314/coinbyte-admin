@@ -34,7 +34,7 @@
     <!--分页组件-->
     <pagination />
     <!--表单渲染-->
-    <eForm :crypto-status="dict.crypto_status" :get-info="getInfo" :info-types="infoTypes" />
+    <eForm :crypto-status="dict.crypto_status" :get-info="getInfo" :info-types="infoTypes" :set-info-types="setInfoTypes" :add-type="addType" :edit-type="editType" />
   </div>
 </template>
 
@@ -78,12 +78,7 @@ export default {
     }
   },
   async mounted() {
-    try {
-      const res = await this.getTypes()
-      this.infoTypes = res.content
-    } catch (e) {
-      console.log(e)
-    }
+    this.setInfoTypes()
   },
   methods: {
     // 改变状态
@@ -110,6 +105,20 @@ export default {
     },
     getTypes() {
       return crudJob.getType()
+    },
+    async setInfoTypes() {
+      try {
+        const res = await this.getTypes()
+        this.infoTypes = res.content
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    addType(data) {
+      return crudJob.addType(data)
+    },
+    editType(data) {
+      return crudJob.editType(data)
     }
   }
 }
