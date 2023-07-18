@@ -13,7 +13,7 @@
           <el-col :span="8">
             <el-row :gutter="10">
               <el-col :span="24">
-                <el-form-item label="虚拟币名称" prop="slug">
+                <el-form-item label="虚拟币名称" prop="name">
                   <el-input v-model="form.name" />
                 </el-form-item>
               </el-col>
@@ -99,6 +99,11 @@
                       />
                     </el-option>
                   </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item label="别名" prop="alias">
+                  <el-input v-model="form.alias" />
                 </el-form-item>
               </el-col>
             </el-row>
@@ -248,7 +253,8 @@ const defaultForm = {
   questionJson: [],
   id: null, // 提交后会报id的错,需要清空id
   name: '',
-  typeIdList: []
+  typeIdList: [],
+  alias: ''
 }
 // const questionJson = [
 //   {
