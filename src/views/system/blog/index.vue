@@ -11,7 +11,7 @@
       <el-table-column prop="title" label="博客标题" />
       <el-table-column prop="author" label="作者" />
       <el-table-column prop="subDesc" label="简介" />
-      <el-table-column prop="icon" label="图片" />
+      <!-- <el-table-column prop="icon" label="图片" /> -->
       <!-- <el-table-column prop="blogTxt" label="博客内容" /> -->
       <el-table-column prop="top" label="置顶" align="center">
         <template slot-scope="scope">

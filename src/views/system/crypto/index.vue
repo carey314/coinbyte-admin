@@ -8,8 +8,8 @@
     <!--表格渲染-->
     <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
       <el-table-column type="selection" width="55" />
-      <el-table-column prop="slug" label="虚拟币标志" />
-      <el-table-column prop="area" label="语言" />
+      <el-table-column prop="slug" label="简称" />
+      <el-table-column prop="name" label="虚拟币名称" />
       <!-- <el-table-column prop="infoTxt" label="网站介绍" />
       <el-table-column prop="moreExtendJson" label="更多信息" />
       <el-table-column prop="socialMediaJson" label="社交媒体" />

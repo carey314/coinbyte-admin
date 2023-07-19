@@ -20,7 +20,7 @@
           <el-form-item label="作者" prop="author">
             <el-input v-model="form.author" style="width: 370px;" />
           </el-form-item>
-          <el-form-item label="图片" prop="icon">
+          <el-form-item label="封面图片" prop="icon">
             <!-- <el-input v-model="form.icon" style="width: 370px;" /> -->
             <el-upload
               class="avatar-uploader"
@@ -32,6 +32,22 @@
               :before-upload="beforeAvatarUpload"
             >
               <img v-if="form.icon" :src="form.icon" class="upload-image">
+              <div v-else class="uploadbtn">
+                + Image
+              </div>
+            </el-upload>
+          </el-form-item>
+          <el-form-item label="小图标" prop="banner">
+            <el-upload
+              class="avatar-uploader"
+              :action="imagesUploadApi"
+              :headers="headers"
+              :show-file-list="false"
+              :on-success="handleSmallUploadSuccess"
+              :on-error="handleUploadError"
+              :before-upload="beforeAvatarUpload"
+            >
+              <img v-if="form.banner" :src="form.banner" class="upload-image">
               <div v-else class="uploadbtn">
                 + Image
               </div>
@@ -89,6 +105,7 @@ const defaultForm = {
   title: '',
   blogTxt: '',
   icon: '',
+  banner: '',
   status: 0,
   subDesc: '',
   typeOne: null,
@@ -251,6 +268,10 @@ export default {
     handleUploadSuccess(response) {
       const url = `${this.baseApi}/file/${response.type}/${response.realName}`
       this.form.icon = url
+    },
+    handleSmallUploadSuccess(response) {
+      const url = `${this.baseApi}/file/${response.type}/${response.realName}`
+      this.form.banner = url
     },
     handleUploadError(error) {
       Notification.error({

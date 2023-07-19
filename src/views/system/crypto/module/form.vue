@@ -18,7 +18,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="24">
-                <el-form-item label="虚拟币标志" prop="slug">
+                <el-form-item label="虚拟币简称" prop="slug">
                   <el-input v-model="form.slug" />
                 </el-form-item>
               </el-col>
